@@ -9,6 +9,5 @@ namespace WSVenta
 
         public int numeroLugar { get; set; }
 
-
     }
 }
