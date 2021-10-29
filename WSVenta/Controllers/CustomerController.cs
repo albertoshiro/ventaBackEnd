@@ -106,7 +106,7 @@ namespace WSVenta.Controllers
                     //remueves un objeto dado antes 
                     db.Customer.Remove(oCustomer);
                     db.SaveChanges();
-                    oResponse.Success = 1;
+                     oResponse.Success = 1;
                 }
             }
             catch (Exception ex)
@@ -115,9 +115,5 @@ namespace WSVenta.Controllers
             }
             return Ok(oResponse);
         }
-
-
-
-
     }
 }
