@@ -32,6 +32,9 @@ namespace WSVenta
                 options.AddPolicy(name: MiCors,
                     builder =>
                     {
+                        //que hacepte todos los tipos de dato para post(insercion de datos)
+                        builder.WithHeaders("*");
+                        //para traer datos de la bd
                         builder.WithOrigins("*");
                     }
 

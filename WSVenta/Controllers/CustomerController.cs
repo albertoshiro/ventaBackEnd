@@ -27,7 +27,7 @@ namespace WSVenta.Controllers
                 try
                 {
                     //en este caso creamos una lista , sacada de los registros del objeto db.Customer(es decir los clientes), y los convertimos en una lista
-                    var list = db.Customer.ToList();
+                    var list = db.Customer.OrderByDescending(d=>d.Id).ToList();
                     oResponse.Success = 1;
                     oResponse.Data = list;
                     //este metodo Ok regresa un objeto que implementa la interfaz IactionResult
