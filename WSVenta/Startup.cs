@@ -36,6 +36,9 @@ namespace WSVenta
                         builder.WithHeaders("*");
                         //para traer datos de la bd
                         builder.WithOrigins("*");
+                        //esta es para los metodos put y delete
+                        builder.WithMethods("*");
+
                     }
 
                     );
