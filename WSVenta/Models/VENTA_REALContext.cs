@@ -23,13 +23,14 @@ namespace WSVenta.Models
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Sale> Sale { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=CERBANTESNELIDA\\SQLEJEMPLO; Database=VENTA_REAL;User=sa;Password=162534");
+                optionsBuilder.UseSqlServer("Server=CERBANTESNELIDA\\SQLEJEMPLO; Database=VENTA_REAL;User=sa;PAssword=162534");
             }
         }
 
@@ -113,6 +114,29 @@ namespace WSVenta.Models
                     .WithMany(p => p.Sale)
                     .HasForeignKey(d => d.IdCustomer)
                     .HasConstraintName("FK_Sale_Customer");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasColumnName("email")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasColumnName("nombre")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasColumnName("password")
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

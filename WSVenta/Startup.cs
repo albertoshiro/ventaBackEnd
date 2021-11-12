@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,10 +7,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using WSVenta.Models.Common;
+using WSVenta.Services;
 
 namespace WSVenta
 {
@@ -38,11 +43,43 @@ namespace WSVenta
                         builder.WithOrigins("*");
                         //esta es para los metodos put y delete
                         builder.WithMethods("*");
-
                     }
 
                     );
             });
+            //configurar jwt
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            //agrgando la cadena secreto a los servicios mediante injeccion de la cadena de texto dada en una clase 
+            services.Configure<AppSettings>(appSettingsSection);
+            //jwt
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            //esta de aca tiene el secreto, como tal se saca el apartado secret de appSetings
+            var llave = Encoding.ASCII.GetBytes(appSettings.secret);
+            services.AddAuthentication(d =>
+            {
+                //aqui necesitamos agragar paquetes nugget para esto
+                d.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                d.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(d=>
+            {
+                d.RequireHttpsMetadata = false;
+                d.SaveToken = true;
+                d.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    //este es la clave , le pasamos nuestra secreot(palabra clave) en esta instrucción
+                    IssuerSigningKey = new SymmetricSecurityKey(llave),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            }
+        );
+
+
+
+            //injectando, en este caso scoped, que el objeto exista por cada solicitud
+            //Esto ya esta inyectado, por lo que podriamos utilizarlo en cada clase de este programa
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
