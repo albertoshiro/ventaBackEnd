@@ -49,12 +49,17 @@ namespace WSVenta
             });
             //configurar jwt
             var appSettingsSection = Configuration.GetSection("AppSettings");
-            //agrgando la cadena secreto a los servicios mediante injeccion de la cadena de texto dada en una clase 
+
+
+            //agregando la cadena secreto a los servicios mediante injeccion de la cadena de texto dada en una clase 
             services.Configure<AppSettings>(appSettingsSection);
+
+
+
             //jwt
             var appSettings = appSettingsSection.Get<AppSettings>();
             //esta de aca tiene el secreto, como tal se saca el apartado secret de appSetings
-            var llave = Encoding.ASCII.GetBytes(appSettings.secret);
+            var llave = Encoding.ASCII.GetBytes(appSettings.Secreto);
             services.AddAuthentication(d =>
             {
                 //aqui necesitamos agragar paquetes nugget para esto
@@ -63,6 +68,7 @@ namespace WSVenta
             }).AddJwtBearer(d=>
             {
                 d.RequireHttpsMetadata = false;
+                //para qeue tenga una vida el token
                 d.SaveToken = true;
                 d.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -78,6 +84,7 @@ namespace WSVenta
 
 
             //injectando, en este caso scoped, que el objeto exista por cada solicitud
+
             //Esto ya esta inyectado, por lo que podriamos utilizarlo en cada clase de este programa
             services.AddScoped<IUserService, UserService>();
         }
@@ -97,7 +104,12 @@ namespace WSVenta
 
             app.UseCors(MiCors);
 
+            //decimos que  usaremos autentificacion necesario para el jwt
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
+          
 
             app.UseEndpoints(endpoints =>
             {

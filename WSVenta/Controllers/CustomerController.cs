@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 using WSVenta.Models;
 using WSVenta.Models.Response;
 using WSVenta.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WSVenta.Controllers
 {
     //ruta
     [Route("api/[controller]")]
     [ApiController]
+    //este data anotation nos dice que revisara que tengas un token valido, de ser el caso dejara que ejecutes el controlador , si no pues no deja que se ejecute el controlador
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         //especificamos que entraremos por get a este metodo

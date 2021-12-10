@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace WSVenta.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class UserController : ControllerBase
     {
         //buena practica a los atributos privados se le pone guion bajo, como tal en esta linea inyectar en el controlador

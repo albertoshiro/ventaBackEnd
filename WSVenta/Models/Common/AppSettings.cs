@@ -7,6 +7,6 @@ namespace WSVenta.Models.Common
 {
     public class AppSettings
     {
-        public string secret { get; set;  }
+        public string Secreto { get; set;  }
     }
 }
