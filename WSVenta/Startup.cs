@@ -80,13 +80,12 @@ namespace WSVenta
                 };
             }
         );
-
-
-
             //injectando, en este caso scoped, que el objeto exista por cada solicitud
 
             //Esto ya esta inyectado, por lo que podriamos utilizarlo en cada clase de este programa
             services.AddScoped<IUserService, UserService>();
+            //aca injectamos el servicio paracumplir con lo de la "D" del principio solid
+            services.AddScoped<ISaleService,SaleService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
